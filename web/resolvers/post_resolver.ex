@@ -17,4 +17,9 @@ defmodule Graphql.PostResolver do
     |> Post.changeset(post_params)
     |> Repo.update
   end
+
+  def delete(%{id: id}, _info) do
+    post = Repo.get!(Post, id)
+    Repo.delete(post)
+  end
 end

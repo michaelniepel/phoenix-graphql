@@ -39,5 +39,11 @@ defmodule Graphql.Schema do
 
       resolve &Graphql.PostResolver.update/2
     end
+
+    field :delete_post, type: :post do
+      arg :id, non_null(:integer)
+
+      resolve &Graphql.PostResolver.delete/2
+    end
   end
 end
