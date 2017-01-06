@@ -13,14 +13,24 @@ defmodule Graphql.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :graphql do
+    plug Guardian.Plug.VerifyHeader, realm: "Bearer"
+    plug Guardian.Plug.LoadResource
+    plug Graphql.Web.Context
+  end
+
   scope "/", Graphql do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
   end
 
-  forward "/api", Absinthe.Plug,
+  scope "/api" do
+    pipe_through :graphql
+
+    forward "/", Absinthe.Plug,
     schema: Graphql.Schema
+  end
 
   forward "/graphiql", Absinthe.Plug.GraphiQL,
     schema: Graphql.Schema
