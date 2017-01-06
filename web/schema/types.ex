@@ -1,6 +1,6 @@
 defmodule Graphql.Schema.Types do
-  use Absinth.Schema.Notation # DSL for graphQL types
-  use Absinth.Ecto, repo: Graphql.Repo # ecto helpers
+  use Absinthe.Schema.Notation # DSL for graphQL types
+  use Absinthe.Ecto, repo: Graphql.Repo # ecto helpers
 
   object :user do
     field :id, :id
