@@ -28,7 +28,7 @@ config :guardian, Guardian,
   issuer: "Graphql",
   ttl: {30, :days},
   verify_issuer: true,
-  secret_token: "Q/pRXuJQoZblG761987hMX0AkzuUpBS91hQVlO06PqrtRd/iAobc3CdBkMPDVYgc",
+  secret_key: "3e5YJ5LjYKStdv49NiEmg7+jxc7W7zP6IdpG1p8/Lcpj+vk9lrN+tcM+JvvzMFsV",
   serializer: Graphql.GuardianSerializer
 
 # Import environment specific config. This must remain at the bottom
