@@ -1,0 +1,217 @@
+{
+  "key": "graphiql",
+  "lastId": 4,
+  "tabIds": [
+    "tab3",
+    "tab4"
+  ],
+  "closedTabs": [
+    {
+      "id": "tab1",
+      "name": "Query 1",
+      "url": "http://localhost:4000/api",
+      "proxy": false,
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTQxNjMsImlhdCI6MTQ4MzgwMjE2MywiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjE4MDliYTc3LTVhMDAtNDkwMC1iYzhkLTBmMWJhNzdjNzBlMCIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.OM-lnaBckQIpzBI64UZbUefSYXaL52Qrro6Zg_tlryWb6oKwbgDPCpiA9VHqXEQk_OBjEj39DLo4MHWzNI9HNg"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTQxNjMsImlhdCI6MTQ4MzgwMjE2MywiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjE4MDliYTc3LTVhMDAtNDkwMC1iYzhkLTBmMWJhNzdjNzBlMCIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.OM-lnaBckQIpzBI64UZbUefSYXaL52Qrro6Zg_tlryWb6oKwbgDPCpiA9VHqXEQk_OBjEj39DLo4MHWzNI9HNg"
+        }
+      ],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "{\n  posts{\n    title,\n    user {\n      name\n    }\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  posts{\n    title,\n    user {\n      id\n    }\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  posts{\n    title\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\n    \") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"2\") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niel@gmail.com\", password:\"123456\") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"111\") {\n    token\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  posts {\n    title,\n    user {\n      name\n    }\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  posts {\n    title\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  posts {\n    id\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation UpdateUser{\n  updateUser(id: 1, user:{name: \"Michael Niepel\", email:\"michael.niepel@gmail.com\", password:\"123456\"}) {\n    id\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation UpdateUser{\n  updateUser(id:1, user:{name: \"Michael Niepel\", email:\"michael.niepel@gmail.com\", password:\"123456\"}) {\n    id\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  user(id:2) {\n    name\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  user(id:3) {\n    name\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  user(id:2) {\n    name\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "{\n  user(id:1) {\n    name\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation DeletePost {\n  deletePost(id:4){\n    id\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "mutation aaa {\n  deletePost(id:3){\n    id\n  }\n}",
+          "variables": ""
+        }
+      ],
+      "graphiql:query": "{\n  posts{\n    title,\n    user {\n      name\n    }\n  }\n}",
+      "graphiql:variables": "",
+      "graphiql:docExplorerWidth": 350,
+      "graphiql:editorFlex": 0.45464725643896975,
+      "graphiql:operationName": null,
+      "graphiql:variableEditorHeight": 200
+    },
+    {
+      "id": "tab2",
+      "name": "Query 2",
+      "url": "http://localhost:4000/graphiql",
+      "proxy": false,
+      "headers": [],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [],
+      "graphiql:query": "",
+      "graphiql:variables": "{}",
+      "graphiql:editorFlex": 1,
+      "graphiql:variableEditorHeight": 200,
+      "graphiql:docExplorerWidth": 350
+    }
+  ],
+  "defaultUrl": "http://localhost:4000/graphiql",
+  "defaultQuery": "",
+  "defaultVariables": "{}",
+  "defaultProxy": false,
+  "defaultHeaders": [],
+  "usedUrls": [
+    "http://localhost:4000/api",
+    "http://localhost:4000/graphiql"
+  ],
+  "recentHeaders": [
+    {
+      "name": "Authorization",
+      "value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTg3NjEsImlhdCI6MTQ4MzgwNjc2MSwiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjA2MTcyZDhkLTY4YjQtNDk5NC1hNTI5LWE1M2MyZGY3NDhkZiIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.8R6DTdn1mWnDvjXxm3Nx1eSBfkU1avrxzq_yQfMw9yZGB67uot_Z3s6nopnX_bPzemdH-LYJS2LiswLTjUW2mQ"
+    },
+    {
+      "name": "Authorization",
+      "value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTQxNjMsImlhdCI6MTQ4MzgwMjE2MywiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjE4MDliYTc3LTVhMDAtNDkwMC1iYzhkLTBmMWJhNzdjNzBlMCIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.OM-lnaBckQIpzBI64UZbUefSYXaL52Qrro6Zg_tlryWb6oKwbgDPCpiA9VHqXEQk_OBjEj39DLo4MHWzNI9HNg"
+    },
+    {
+      "name": "Authorization",
+      "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTQxNjMsImlhdCI6MTQ4MzgwMjE2MywiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjE4MDliYTc3LTVhMDAtNDkwMC1iYzhkLTBmMWJhNzdjNzBlMCIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.OM-lnaBckQIpzBI64UZbUefSYXaL52Qrro6Zg_tlryWb6oKwbgDPCpiA9VHqXEQk_OBjEj39DLo4MHWzNI9HNg"
+    }
+  ],
+  "maxTabHistory": 20,
+  "maxUrlHistory": 20,
+  "maxHistory": 20,
+  "savedQueries": [
+    {
+      "query": "{\n  posts{\n    title\n  }\n}",
+      "variables": "{}"
+    },
+    {
+      "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\"){\n    token\n  }\n}",
+      "variables": "{}"
+    }
+  ],
+  "activeId": "tab4",
+  "tabs": [
+    {
+      "id": "tab3",
+      "name": "Get Posts",
+      "url": "http://localhost:4000/api",
+      "proxy": false,
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJVc2VyOjEiLCJleHAiOjE0ODYzOTg3NjEsImlhdCI6MTQ4MzgwNjc2MSwiaXNzIjoiR3JhcGhxbCIsImp0aSI6IjA2MTcyZDhkLTY4YjQtNDk5NC1hNTI5LWE1M2MyZGY3NDhkZiIsInBlbSI6e30sInN1YiI6IlVzZXI6MSIsInR5cCI6ImFjY2VzcyJ9.8R6DTdn1mWnDvjXxm3Nx1eSBfkU1avrxzq_yQfMw9yZGB67uot_Z3s6nopnX_bPzemdH-LYJS2LiswLTjUW2mQ"
+        }
+      ],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "{\n  posts{\n    title\n  }\n}",
+          "variables": "{}"
+        }
+      ],
+      "graphiql:query": "{\n  posts{\n    title\n  }\n}",
+      "graphiql:variables": "{}",
+      "graphiql:operationName": null,
+      "graphiql:editorFlex": 1,
+      "graphiql:variableEditorHeight": 200,
+      "graphiql:docExplorerWidth": 350
+    },
+    {
+      "id": "tab4",
+      "name": "Login",
+      "url": "http://localhost:4000/api",
+      "proxy": false,
+      "headers": [],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\"){\n    token\n  }\n}",
+          "variables": "{}"
+        }
+      ],
+      "graphiql:query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\"){\n    token\n  }\n}",
+      "graphiql:variables": "{}",
+      "graphiql:operationName": "Login",
+      "graphiql:editorFlex": 1,
+      "graphiql:variableEditorHeight": 200,
+      "graphiql:docExplorerWidth": 350
+    }
+  ]
+}
