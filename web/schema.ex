@@ -38,6 +38,13 @@ defmodule Graphql.Schema do
       resolve &Graphql.UserResolver.update/2
     end
 
+    field :login, type: :session do
+      arg :email, non_null(:string)
+      arg :password, non_null(:string)
+
+      resolve &Graphql.UserResolver.login/2
+    end
+
     field :create_post, type: :post do
       arg :title, non_null(:string)
       arg :body, non_null(:string)
