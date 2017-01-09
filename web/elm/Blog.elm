@@ -3,7 +3,7 @@
 -}
 
 
-module Graphql exposing (users, Users)
+module Blog exposing (users, Users)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (encode)
@@ -23,28 +23,26 @@ type alias User =
 
 
 type alias Users =
-    { users : List User
-    }
+    List User
 
 
 users : Http.Request Users
 users =
     let
         graphQLQuery =
-            """query users { users { name email } }"""
+            """query users { users { name, email } }"""
     in
         let
             graphQLParams =
                 Json.Encode.object
                     []
         in
-            GraphQL.query "GET" endpointUrl graphQLQuery "users" graphQLParams usersDecoder
+            GraphQL.query "POST" endpointUrl graphQLQuery "users" graphQLParams usersDecoder
 
 
 usersDecoder : Decoder Users
 usersDecoder =
-    map Users
-        (field "users" (list userDecoder))
+    (at [ "data", "users" ] (list userDecoder))
 
 
 userDecoder : Decoder User
