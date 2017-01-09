@@ -1,9 +1,10 @@
 {
   "key": "graphiql",
-  "lastId": 4,
+  "lastId": 5,
   "tabIds": [
     "tab3",
-    "tab4"
+    "tab4",
+    "tab5"
   ],
   "closedTabs": [
     {
@@ -156,6 +157,10 @@
   "maxHistory": 20,
   "savedQueries": [
     {
+      "query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+      "variables": "{}"
+    },
+    {
       "query": "{\n  posts{\n    title\n  }\n}",
       "variables": "{}"
     },
@@ -164,7 +169,7 @@
       "variables": "{}"
     }
   ],
-  "activeId": "tab4",
+  "activeId": "tab5",
   "tabs": [
     {
       "id": "tab3",
@@ -187,10 +192,10 @@
       ],
       "graphiql:query": "{\n  posts{\n    title\n  }\n}",
       "graphiql:variables": "{}",
-      "graphiql:operationName": null,
+      "graphiql:docExplorerWidth": 350,
       "graphiql:editorFlex": 1,
-      "graphiql:variableEditorHeight": 200,
-      "graphiql:docExplorerWidth": 350
+      "graphiql:operationName": null,
+      "graphiql:variableEditorHeight": 200
     },
     {
       "id": "tab4",
@@ -208,7 +213,28 @@
       ],
       "graphiql:query": "mutation Login{\n  login(email:\"michael.niepel@gmail.com\", password:\"123456\"){\n    token\n  }\n}",
       "graphiql:variables": "{}",
+      "graphiql:docExplorerWidth": 350,
+      "graphiql:editorFlex": 1,
       "graphiql:operationName": "Login",
+      "graphiql:variableEditorHeight": 200
+    },
+    {
+      "id": "tab5",
+      "name": "Users",
+      "url": "http://localhost:4000/api",
+      "proxy": false,
+      "headers": [],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+          "variables": "{}"
+        }
+      ],
+      "graphiql:query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+      "graphiql:variables": "{}",
+      "graphiql:operationName": "users",
       "graphiql:editorFlex": 1,
       "graphiql:variableEditorHeight": 200,
       "graphiql:docExplorerWidth": 350
