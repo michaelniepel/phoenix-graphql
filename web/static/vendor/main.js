@@ -13080,17 +13080,17 @@ var _michaelniepel$elm_graphql_module$GraphQL$query = F6(
 		return A6(_michaelniepel$elm_graphql_module$GraphQL$fetch, method, url, query, operation, variables, decoder);
 	});
 
-var _user$project$Blog$endpointUrl = 'http://localhost:4000/api/';
-var _user$project$Blog$User = F2(
+var _user$project$GraphQL_Blog$endpointUrl = 'http://localhost:4000/api/';
+var _user$project$GraphQL_Blog$User = F2(
 	function (a, b) {
 		return {name: a, email: b};
 	});
-var _user$project$Blog$userDecoder = A3(
+var _user$project$GraphQL_Blog$userDecoder = A3(
 	_elm_lang$core$Json_Decode$map2,
-	_user$project$Blog$User,
+	_user$project$GraphQL_Blog$User,
 	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
 	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string));
-var _user$project$Blog$usersDecoder = A2(
+var _user$project$GraphQL_Blog$usersDecoder = A2(
 	_elm_lang$core$Json_Decode$at,
 	{
 		ctor: '::',
@@ -13101,12 +13101,12 @@ var _user$project$Blog$usersDecoder = A2(
 			_1: {ctor: '[]'}
 		}
 	},
-	_elm_lang$core$Json_Decode$list(_user$project$Blog$userDecoder));
-var _user$project$Blog$usersRequest = function () {
+	_elm_lang$core$Json_Decode$list(_user$project$GraphQL_Blog$userDecoder));
+var _user$project$GraphQL_Blog$usersRequest = function () {
 	var graphQLQuery = 'query users { users { name, email } }';
 	var graphQLParams = _elm_lang$core$Json_Encode$object(
 		{ctor: '[]'});
-	return A6(_michaelniepel$elm_graphql_module$GraphQL$query, 'POST', _user$project$Blog$endpointUrl, graphQLQuery, 'users', graphQLParams, _user$project$Blog$usersDecoder);
+	return A6(_michaelniepel$elm_graphql_module$GraphQL$query, 'POST', _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'users', graphQLParams, _user$project$GraphQL_Blog$usersDecoder);
 }();
 
 var _user$project$Main$subscriptions = function (model) {
@@ -13129,7 +13129,7 @@ var _user$project$Main$Model = F3(
 var _user$project$Main$FetchUsers = function (a) {
 	return {ctor: 'FetchUsers', _0: a};
 };
-var _user$project$Main$fetchUsers = A2(_elm_lang$http$Http$send, _user$project$Main$FetchUsers, _user$project$Blog$usersRequest);
+var _user$project$Main$fetchUsers = A2(_elm_lang$http$Http$send, _user$project$Main$FetchUsers, _user$project$GraphQL_Blog$usersRequest);
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
 	_0: A3(
@@ -13247,7 +13247,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"LoadUsers":[],"FetchUsers":["Result.Result Http.Error Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Blog.Users":{"args":[],"type":"List Blog.User"},"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"LoadUsers":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

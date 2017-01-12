@@ -3,7 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class)
-import Blog exposing (usersRequest, Users, User)
+import GraphQL.Blog exposing (usersRequest, Users, User)
 import Http
 
 

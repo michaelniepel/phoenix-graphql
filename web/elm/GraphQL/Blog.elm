@@ -3,7 +3,7 @@
 -}
 
 
-module Blog exposing (usersRequest, Users, User)
+module GraphQL.Blog exposing (usersRequest, Users, User)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (encode)
