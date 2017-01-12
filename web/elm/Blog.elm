@@ -16,6 +16,10 @@ endpointUrl =
     "http://localhost:4000/api/"
 
 
+
+-- TYPES
+
+
 type alias User =
     { name : String
     , email : String
@@ -24,6 +28,10 @@ type alias User =
 
 type alias Users =
     List User
+
+
+
+-- REQUESTS
 
 
 usersRequest : Http.Request Users
@@ -38,6 +46,10 @@ usersRequest =
                     []
         in
             GraphQL.query "POST" endpointUrl graphQLQuery "users" graphQLParams usersDecoder
+
+
+
+-- DECODERS
 
 
 usersDecoder : Decoder Users
