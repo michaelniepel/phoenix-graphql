@@ -10,8 +10,7 @@ import Http
 
 
 type alias Model =
-    { counter : Int
-    , users : Users
+    { users : Users
     , error : String
     , fetching : Bool
     }
@@ -19,13 +18,11 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model 0 [] "" False, Cmd.none )
+    ( Model [] "" False, Cmd.none )
 
 
 type Msg
-    = Inc
-    | Dec
-    | LoadUsers
+    = LoadUsers
     | FetchUsers (Result Http.Error Users)
 
 
@@ -41,12 +38,6 @@ fetchUsers =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Inc ->
-            ( { model | counter = model.counter + 1 }, Cmd.none )
-
-        Dec ->
-            ( { model | counter = model.counter - 1 }, Cmd.none )
-
         LoadUsers ->
             ( { model | fetching = True }, fetchUsers )
 
@@ -64,10 +55,7 @@ update msg model =
 mainView : Model -> Html Msg
 mainView model =
     div []
-        [ button [ onClick Inc ] [ text "+" ]
-        , button [ onClick Dec ] [ text "-" ]
-        , button [ Html.Events.onClick LoadUsers ] [ text "Load users" ]
-        , p [] [ text (toString model.counter) ]
+        [ button [ Html.Events.onClick LoadUsers ] [ text "Load users" ]
         , p [] [ text model.error ]
         ]
 
