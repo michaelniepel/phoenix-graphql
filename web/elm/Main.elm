@@ -11,7 +11,7 @@ import Http
 
 type alias Model =
     { counter : Int
-    , users : Maybe Users
+    , users : Users
     , error : String
     , fetching : Bool
     }
@@ -19,7 +19,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model 0 Nothing "" False, Cmd.none )
+    ( Model 0 [] "" False, Cmd.none )
 
 
 type Msg
@@ -51,10 +51,10 @@ update msg model =
             ( { model | fetching = True }, fetchUsers )
 
         FetchUsers (Ok users) ->
-            ( { model | users = Just users, fetching = False }, Cmd.none )
+            ( { model | error = "", users = users, fetching = False }, Cmd.none )
 
         FetchUsers (Err err) ->
-            ( { model | error = (toString err), fetching = False }, Cmd.none )
+            ( { model | error = (toString err), users = [], fetching = False }, Cmd.none )
 
 
 

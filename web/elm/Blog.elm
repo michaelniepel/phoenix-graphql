@@ -17,8 +17,8 @@ endpointUrl =
 
 
 type alias User =
-    { name : Maybe String
-    , email : Maybe String
+    { name : String
+    , email : String
     }
 
 
@@ -48,5 +48,5 @@ usersDecoder =
 userDecoder : Decoder User
 userDecoder =
     map2 User
-        (field "name" (maybe string))
-        (field "email" (maybe string))
+        (field "name" string)
+        (field "email" string)
