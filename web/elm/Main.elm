@@ -2,7 +2,8 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (onClick)
-import Blog exposing (users, Users)
+import Html.Attributes exposing (class)
+import Blog exposing (usersRequest, Users, User)
 import Http
 
 
@@ -18,7 +19,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] "" False, Cmd.none )
+    ( Model [] "" False, fetchUsers )
 
 
 type Msg
@@ -28,7 +29,7 @@ type Msg
 
 fetchUsers : Cmd Msg
 fetchUsers =
-    Http.send FetchUsers <| users
+    Http.send FetchUsers <| usersRequest
 
 
 
@@ -52,11 +53,31 @@ update msg model =
 -- VIEW
 
 
+usersSection : Model -> Html Msg
+usersSection model =
+    let
+        listHtml =
+            if (model.fetching == True) then
+                p [] [ text "Fetching..." ]
+            else
+                ul [] (List.map (\user -> userDetail user) model.users)
+    in
+        div [ class "users" ]
+            [ h3 [ Html.Events.onClick LoadUsers ] [ text "Users" ]
+            , listHtml
+            ]
+
+
+userDetail : User -> Html Msg
+userDetail user =
+    li [] [ text user.name ]
+
+
 mainView : Model -> Html Msg
 mainView model =
     div []
-        [ button [ Html.Events.onClick LoadUsers ] [ text "Load users" ]
-        , p [] [ text model.error ]
+        [ p [] [ text model.error ]
+        , usersSection model
         ]
 
 

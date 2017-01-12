@@ -3,7 +3,7 @@
 -}
 
 
-module Blog exposing (users, Users)
+module Blog exposing (usersRequest, Users, User)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (encode)
@@ -26,8 +26,8 @@ type alias Users =
     List User
 
 
-users : Http.Request Users
-users =
+usersRequest : Http.Request Users
+usersRequest =
     let
         graphQLQuery =
             """query users { users { name, email } }"""
