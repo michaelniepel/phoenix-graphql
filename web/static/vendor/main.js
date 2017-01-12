@@ -13080,7 +13080,29 @@ var _michaelniepel$elm_graphql_module$GraphQL$query = F6(
 		return A6(_michaelniepel$elm_graphql_module$GraphQL$fetch, method, url, query, operation, variables, decoder);
 	});
 
+var _user$project$GraphQL_Blog$tokenDecoder = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'data',
+		_1: {
+			ctor: '::',
+			_0: 'login',
+			_1: {
+				ctor: '::',
+				_0: 'token',
+				_1: {ctor: '[]'}
+			}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
 var _user$project$GraphQL_Blog$endpointUrl = 'http://localhost:4000/api/';
+var _user$project$GraphQL_Blog$loginRequest = function () {
+	var graphQLQuery = 'mutation Login { login(email:\"michael.niepel@gmail.com\", password:\"123456\"){token}}';
+	var graphQLParams = _elm_lang$core$Json_Encode$object(
+		{ctor: '[]'});
+	return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
+}();
 var _user$project$GraphQL_Blog$User = F2(
 	function (a, b) {
 		return {name: a, email: b};
@@ -13122,9 +13144,26 @@ var _user$project$Main$userDetail = function (user) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {users: a, error: b, fetching: c};
+var _user$project$Main$Model = F4(
+	function (a, b, c, d) {
+		return {users: a, error: b, fetching: c, userToken: d};
+	});
+var _user$project$Main$LoginResult = function (a) {
+	return {ctor: 'LoginResult', _0: a};
+};
+var _user$project$Main$login = A2(_elm_lang$http$Http$send, _user$project$Main$LoginResult, _user$project$GraphQL_Blog$loginRequest);
+var _user$project$Main$Login = {ctor: 'Login'};
+var _user$project$Main$loginButton = A2(
+	_elm_lang$html$Html$button,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Login),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Login'),
+		_1: {ctor: '[]'}
 	});
 var _user$project$Main$FetchUsers = function (a) {
 	return {ctor: 'FetchUsers', _0: a};
@@ -13132,46 +13171,79 @@ var _user$project$Main$FetchUsers = function (a) {
 var _user$project$Main$fetchUsers = A2(_elm_lang$http$Http$send, _user$project$Main$FetchUsers, _user$project$GraphQL_Blog$usersRequest);
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: A3(
+	_0: A4(
 		_user$project$Main$Model,
 		{ctor: '[]'},
 		'',
-		false),
+		false,
+		_elm_lang$core$Maybe$Nothing),
 	_1: _user$project$Main$fetchUsers
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
 		var _p0 = msg;
-		if (_p0.ctor === 'LoadUsers') {
-			return {
-				ctor: '_Tuple2',
-				_0: _elm_lang$core$Native_Utils.update(
-					model,
-					{fetching: true}),
-				_1: _user$project$Main$fetchUsers
-			};
-		} else {
-			if (_p0._0.ctor === 'Ok') {
+		switch (_p0.ctor) {
+			case 'LoadUsers':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{error: '', users: _p0._0._0, fetching: false}),
-					_1: _elm_lang$core$Platform_Cmd$none
+						{fetching: true}),
+					_1: _user$project$Main$fetchUsers
 				};
-			} else {
+			case 'FetchUsers':
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{error: '', users: _p0._0._0, fetching: false}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								error: _elm_lang$core$Basics$toString(_p0._0._0),
+								users: {ctor: '[]'},
+								fetching: false
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
+			case 'Login':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{
-							error: _elm_lang$core$Basics$toString(_p0._0._0),
-							users: {ctor: '[]'},
-							fetching: false
-						}),
-					_1: _elm_lang$core$Platform_Cmd$none
+						{userToken: _elm_lang$core$Maybe$Nothing}),
+					_1: _user$project$Main$login
 				};
-			}
+			default:
+				if (_p0._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								userToken: _elm_lang$core$Maybe$Just(_p0._0._0)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{
+								userToken: _elm_lang$core$Maybe$Nothing,
+								error: _elm_lang$core$Basics$toString(_p0._0._0)
+							}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				}
 		}
 	});
 var _user$project$Main$LoadUsers = {ctor: 'LoadUsers'};
@@ -13237,7 +13309,23 @@ var _user$project$Main$mainView = function (model) {
 			_1: {
 				ctor: '::',
 				_0: _user$project$Main$usersSection(model),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$p,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								A2(_elm_lang$core$Maybe$withDefault, 'Not logged', model.userToken)),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Main$loginButton,
+						_1: {ctor: '[]'}
+					}
+				}
 			}
 		});
 };
@@ -13247,7 +13335,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"LoadUsers":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"LoadUsers":[],"LoginResult":["Result.Result Http.Error GraphQL.Blog.Token"],"Login":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Token":{"args":[],"type":"String"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

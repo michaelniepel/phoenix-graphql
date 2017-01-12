@@ -3,7 +3,7 @@
 -}
 
 
-module GraphQL.Blog exposing (usersRequest, Users, User)
+module GraphQL.Blog exposing (usersRequest, loginRequest, Users, User, Token)
 
 import Json.Decode exposing (..)
 import Json.Encode exposing (encode)
@@ -30,6 +30,10 @@ type alias Users =
     List User
 
 
+type alias Token =
+    String
+
+
 
 -- REQUESTS
 
@@ -48,6 +52,20 @@ usersRequest =
             GraphQL.query "POST" endpointUrl graphQLQuery "users" graphQLParams usersDecoder
 
 
+loginRequest : Http.Request Token
+loginRequest =
+    let
+        graphQLQuery =
+            """mutation Login { login(email:"michael.niepel@gmail.com", password:"123456"){token}}"""
+    in
+        let
+            graphQLParams =
+                Json.Encode.object
+                    []
+        in
+            GraphQL.mutation endpointUrl graphQLQuery "Login" graphQLParams tokenDecoder
+
+
 
 -- DECODERS
 
@@ -62,3 +80,8 @@ userDecoder =
     map2 User
         (field "name" string)
         (field "email" string)
+
+
+tokenDecoder : Decoder Token
+tokenDecoder =
+    (at [ "data", "login", "token" ] string)

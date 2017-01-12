@@ -3,7 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Html.Attributes exposing (class)
-import GraphQL.Blog exposing (usersRequest, Users, User)
+import GraphQL.Blog exposing (usersRequest, loginRequest, Users, User, Token)
 import Http
 
 
@@ -14,22 +14,30 @@ type alias Model =
     { users : Users
     , error : String
     , fetching : Bool
+    , userToken : Maybe Token
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] "" False, fetchUsers )
+    ( Model [] "" False Nothing, fetchUsers )
 
 
 type Msg
     = LoadUsers
     | FetchUsers (Result Http.Error Users)
+    | Login
+    | LoginResult (Result Http.Error Token)
 
 
 fetchUsers : Cmd Msg
 fetchUsers =
     Http.send FetchUsers <| usersRequest
+
+
+login : Cmd Msg
+login =
+    Http.send LoginResult <| loginRequest
 
 
 
@@ -47,6 +55,15 @@ update msg model =
 
         FetchUsers (Err err) ->
             ( { model | error = (toString err), users = [], fetching = False }, Cmd.none )
+
+        Login ->
+            ( { model | userToken = Nothing }, login )
+
+        LoginResult (Ok token) ->
+            ( { model | userToken = Just token }, Cmd.none )
+
+        LoginResult (Err err) ->
+            ( { model | userToken = Nothing, error = (toString err) }, Cmd.none )
 
 
 
@@ -73,11 +90,18 @@ userDetail user =
     li [] [ text user.name ]
 
 
+loginButton : Html Msg
+loginButton =
+    button [ Html.Events.onClick Login ] [ text "Login" ]
+
+
 mainView : Model -> Html Msg
 mainView model =
     div []
         [ p [] [ text model.error ]
         , usersSection model
+        , p [] [ text (Maybe.withDefault "Not logged" model.userToken) ]
+        , loginButton
         ]
 
 
