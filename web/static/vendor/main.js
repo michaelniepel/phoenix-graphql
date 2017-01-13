@@ -13385,6 +13385,32 @@ var _user$project$Main$usersSection = function (model) {
 		});
 };
 var _user$project$Main$mainView = function (model) {
+	var authSection = function () {
+		var _p1 = model.userToken;
+		if (_p1.ctor === 'Nothing') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _user$project$Main$loginForm(model),
+					_1: {
+						ctor: '::',
+						_0: _user$project$Main$loginButton,
+						_1: {ctor: '[]'}
+					}
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Logout'),
+					_1: {ctor: '[]'}
+				});
+		}
+	}();
 	return A2(
 		_elm_lang$html$Html$div,
 		{ctor: '[]'},
@@ -13414,12 +13440,8 @@ var _user$project$Main$mainView = function (model) {
 						}),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Main$loginForm(model),
-						_1: {
-							ctor: '::',
-							_0: _user$project$Main$loginButton,
-							_1: {ctor: '[]'}
-						}
+						_0: authSection,
+						_1: {ctor: '[]'}
 					}
 				}
 			}

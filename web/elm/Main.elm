@@ -115,13 +115,21 @@ loginButton =
 
 mainView : Model -> Html Msg
 mainView model =
-    div []
-        [ p [] [ text model.error ]
-        , usersSection model
-        , p [] [ text (Maybe.withDefault "Not logged" model.userToken) ]
-        , loginForm model
-        , loginButton
-        ]
+    let
+        authSection =
+            case model.userToken of
+                Nothing ->
+                    div [] [ loginForm model, loginButton ]
+
+                Just token ->
+                    div [] [ text "Logout" ]
+    in
+        div []
+            [ p [] [ text model.error ]
+            , usersSection model
+            , p [] [ text (Maybe.withDefault "Not logged" model.userToken) ]
+            , authSection
+            ]
 
 
 
