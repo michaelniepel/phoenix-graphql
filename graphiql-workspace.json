@@ -1,10 +1,12 @@
 {
   "key": "graphiql",
-  "lastId": 5,
+  "lastId": 7,
   "tabIds": [
     "tab3",
     "tab4",
-    "tab5"
+    "tab5",
+    "tab6",
+    "tab7"
   ],
   "closedTabs": [
     {
@@ -135,6 +137,7 @@
   "defaultProxy": false,
   "defaultHeaders": [],
   "usedUrls": [
+    "http://localhost:4000/api/",
     "http://localhost:4000/api",
     "http://localhost:4000/graphiql"
   ],
@@ -169,7 +172,7 @@
       "variables": "{}"
     }
   ],
-  "activeId": "tab5",
+  "activeId": "tab7",
   "tabs": [
     {
       "id": "tab3",
@@ -186,14 +189,18 @@
       "maxHistory": 20,
       "history": [
         {
+          "query": "{\n  posts{\n    title\n    user{\n      name\n    }\n  }\n}",
+          "variables": "{}"
+        },
+        {
           "query": "{\n  posts{\n    title\n  }\n}",
           "variables": "{}"
         }
       ],
-      "graphiql:query": "{\n  posts{\n    title\n  }\n}",
+      "graphiql:query": "{\n  posts{\n    title\n    user{\n      name\n    }\n  }\n}",
       "graphiql:variables": "{}",
       "graphiql:docExplorerWidth": 350,
-      "graphiql:editorFlex": 1,
+      "graphiql:editorFlex": 0.3982777179763186,
       "graphiql:operationName": null,
       "graphiql:variableEditorHeight": 200
     },
@@ -221,20 +228,110 @@
     {
       "id": "tab5",
       "name": "Users",
-      "url": "http://localhost:4000/api",
+      "url": "http://localhost:4000/api/",
       "proxy": false,
       "headers": [],
       "collapsed": false,
       "maxHistory": 20,
       "history": [
         {
+          "query": "query users { users { name, email, id } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { posts { name, email, id } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query posts { users { name, email, id } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { users { name, email, id } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { users { name, email, id, aaa } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { users { name, email, id } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { users { name, email } }",
+          "variables": "{}"
+        },
+        {
+          "query": "query users { users { name, email } }",
+          "variables": ""
+        },
+        {
+          "query": "\"query users { users { name, email } }\"",
+          "variables": ""
+        },
+        {
+          "query": "query users{users{name,email}}",
+          "variables": ""
+        },
+        {
+          "query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+          "variables": ""
+        },
+        {
+          "query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+          "variables": "\"{}\""
+        },
+        {
           "query": "query users{\n  users{\n    name,\n    email\n  }\n}",
           "variables": "{}"
         }
       ],
-      "graphiql:query": "query users{\n  users{\n    name,\n    email\n  }\n}",
+      "graphiql:query": "query users { users { name, email, id } }",
       "graphiql:variables": "{}",
+      "graphiql:docExplorerWidth": 350,
+      "graphiql:editorFlex": 1,
       "graphiql:operationName": "users",
+      "graphiql:variableEditorHeight": 200
+    },
+    {
+      "id": "tab6",
+      "name": "Update user",
+      "url": "http://localhost:4000/graphiql",
+      "proxy": false,
+      "headers": [],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "mutation UpdateUser{\n  updateUser(id:1, user:{name:\"Michael Niepel\", email:\"michael.niepel@gmail.com\", password:\"123456\"}){\n    id\n  }\n}",
+          "variables": "{}"
+        }
+      ],
+      "graphiql:query": "mutation UpdateUser{\n  updateUser(id:1, user:{name:\"Michael Niepel\", email:\"michael.niepel@gmail.com\", password:\"123456\"}){\n    id\n  }\n}",
+      "graphiql:variables": "{}",
+      "graphiql:docExplorerWidth": 350,
+      "graphiql:editorFlex": 1,
+      "graphiql:operationName": "UpdateUser",
+      "graphiql:variableEditorHeight": 200
+    },
+    {
+      "id": "tab7",
+      "name": "Not authorized posts",
+      "url": "http://localhost:4000/graphiql",
+      "proxy": false,
+      "headers": [],
+      "collapsed": false,
+      "maxHistory": 20,
+      "history": [
+        {
+          "query": "{\n  posts{\n    title\n    user{\n      name\n    }\n  }\n}",
+          "variables": "{}"
+        }
+      ],
+      "graphiql:query": "{\n  posts{\n    title\n    user{\n      name\n    }\n  }\n}",
+      "graphiql:variables": "{}",
+      "graphiql:operationName": null,
       "graphiql:editorFlex": 1,
       "graphiql:variableEditorHeight": 200,
       "graphiql:docExplorerWidth": 350
