@@ -104,7 +104,7 @@ loginForm : Model -> Html Msg
 loginForm model =
     div []
         [ input [ type_ "text", value model.email, placeholder "john@doe.com", onInput InputEmail ] []
-        , input [ type_ "password", value model.password, placeholder "john@doe.com", onInput InputPassword ] []
+        , input [ type_ "password", value model.password, onInput InputPassword ] []
         ]
 
 

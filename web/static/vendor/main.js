@@ -13202,12 +13202,8 @@ var _user$project$Main$loginForm = function (model) {
 							_0: _elm_lang$html$Html_Attributes$value(model.password),
 							_1: {
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$placeholder('john@doe.com'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$InputPassword),
-									_1: {ctor: '[]'}
-								}
+								_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$InputPassword),
+								_1: {ctor: '[]'}
 							}
 						}
 					},
