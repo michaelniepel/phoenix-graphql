@@ -13097,12 +13097,22 @@ var _user$project$GraphQL_Blog$tokenDecoder = A2(
 	},
 	_elm_lang$core$Json_Decode$string);
 var _user$project$GraphQL_Blog$endpointUrl = 'http://localhost:4000/api/';
-var _user$project$GraphQL_Blog$loginRequest = function () {
-	var graphQLQuery = 'mutation Login { login(email:\"michael.niepel@gmail.com\", password:\"123456\"){token}}';
-	var graphQLParams = _elm_lang$core$Json_Encode$object(
-		{ctor: '[]'});
-	return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
-}();
+var _user$project$GraphQL_Blog$loginRequest = F2(
+	function (email, password) {
+		var graphQLQuery = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'mutation Login { login(email:\"',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				email,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'\", password:\"',
+					A2(_elm_lang$core$Basics_ops['++'], password, '\"){token}}'))));
+		var graphQLParams = _elm_lang$core$Json_Encode$object(
+			{ctor: '[]'});
+		return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
+	});
 var _user$project$GraphQL_Blog$User = F2(
 	function (a, b) {
 		return {name: a, email: b};
@@ -13144,14 +13154,77 @@ var _user$project$Main$userDetail = function (user) {
 			_1: {ctor: '[]'}
 		});
 };
-var _user$project$Main$Model = F4(
-	function (a, b, c, d) {
-		return {users: a, error: b, fetching: c, userToken: d};
+var _user$project$Main$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {users: a, error: b, fetching: c, userToken: d, email: e, password: f};
 	});
+var _user$project$Main$InputPassword = function (a) {
+	return {ctor: 'InputPassword', _0: a};
+};
+var _user$project$Main$InputEmail = function (a) {
+	return {ctor: 'InputEmail', _0: a};
+};
+var _user$project$Main$loginForm = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$input,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$type_('text'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$value(model.email),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$placeholder('john@doe.com'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$InputEmail),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$type_('password'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$value(model.password),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$placeholder('john@doe.com'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$InputPassword),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _user$project$Main$LoginResult = function (a) {
 	return {ctor: 'LoginResult', _0: a};
 };
-var _user$project$Main$login = A2(_elm_lang$http$Http$send, _user$project$Main$LoginResult, _user$project$GraphQL_Blog$loginRequest);
+var _user$project$Main$login = function (model) {
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Main$LoginResult,
+		A2(_user$project$GraphQL_Blog$loginRequest, model.email, model.password));
+};
 var _user$project$Main$Login = {ctor: 'Login'};
 var _user$project$Main$loginButton = A2(
 	_elm_lang$html$Html$button,
@@ -13171,12 +13244,14 @@ var _user$project$Main$FetchUsers = function (a) {
 var _user$project$Main$fetchUsers = A2(_elm_lang$http$Http$send, _user$project$Main$FetchUsers, _user$project$GraphQL_Blog$usersRequest);
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
-	_0: A4(
+	_0: A6(
 		_user$project$Main$Model,
 		{ctor: '[]'},
 		'',
 		false,
-		_elm_lang$core$Maybe$Nothing),
+		_elm_lang$core$Maybe$Nothing,
+		'',
+		''),
 	_1: _user$project$Main$fetchUsers
 };
 var _user$project$Main$update = F2(
@@ -13219,16 +13294,17 @@ var _user$project$Main$update = F2(
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{userToken: _elm_lang$core$Maybe$Nothing}),
-					_1: _user$project$Main$login
+					_1: _user$project$Main$login(model)
 				};
-			default:
+			case 'LoginResult':
 				if (_p0._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								userToken: _elm_lang$core$Maybe$Just(_p0._0._0)
+								userToken: _elm_lang$core$Maybe$Just(_p0._0._0),
+								error: ''
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -13244,6 +13320,22 @@ var _user$project$Main$update = F2(
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
+			case 'InputEmail':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{email: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			default:
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{password: _p0._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
 var _user$project$Main$LoadUsers = {ctor: 'LoadUsers'};
@@ -13322,8 +13414,12 @@ var _user$project$Main$mainView = function (model) {
 						}),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Main$loginButton,
-						_1: {ctor: '[]'}
+						_0: _user$project$Main$loginForm(model),
+						_1: {
+							ctor: '::',
+							_0: _user$project$Main$loginButton,
+							_1: {ctor: '[]'}
+						}
 					}
 				}
 			}
@@ -13335,7 +13431,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"LoadUsers":[],"LoginResult":["Result.Result Http.Error GraphQL.Blog.Token"],"Login":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Token":{"args":[],"type":"String"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"InputPassword":["String"],"LoadUsers":[],"LoginResult":["Result.Result Http.Error GraphQL.Blog.Token"],"InputEmail":["String"],"Login":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Token":{"args":[],"type":"String"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

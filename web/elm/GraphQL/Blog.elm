@@ -52,11 +52,11 @@ usersRequest =
             GraphQL.query "POST" endpointUrl graphQLQuery "users" graphQLParams usersDecoder
 
 
-loginRequest : Http.Request Token
-loginRequest =
+loginRequest : String -> String -> Http.Request Token
+loginRequest email password =
     let
         graphQLQuery =
-            """mutation Login { login(email:"michael.niepel@gmail.com", password:"123456"){token}}"""
+            "mutation Login { login(email:\"" ++ email ++ "\", password:\"" ++ password ++ "\"){token}}"
     in
         let
             graphQLParams =

@@ -1,8 +1,8 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Events exposing (onClick)
-import Html.Attributes exposing (class)
+import Html.Events exposing (onClick, onInput)
+import Html.Attributes exposing (class, type_, value, placeholder)
 import GraphQL.Blog exposing (usersRequest, loginRequest, Users, User, Token)
 import Http
 
@@ -15,12 +15,14 @@ type alias Model =
     , error : String
     , fetching : Bool
     , userToken : Maybe Token
+    , email : String
+    , password : String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] "" False Nothing, fetchUsers )
+    ( Model [] "" False Nothing "" "", fetchUsers )
 
 
 type Msg
@@ -28,6 +30,8 @@ type Msg
     | FetchUsers (Result Http.Error Users)
     | Login
     | LoginResult (Result Http.Error Token)
+    | InputEmail String
+    | InputPassword String
 
 
 fetchUsers : Cmd Msg
@@ -35,9 +39,9 @@ fetchUsers =
     Http.send FetchUsers <| usersRequest
 
 
-login : Cmd Msg
-login =
-    Http.send LoginResult <| loginRequest
+login : Model -> Cmd Msg
+login model =
+    Http.send LoginResult <| loginRequest model.email model.password
 
 
 
@@ -57,13 +61,19 @@ update msg model =
             ( { model | error = (toString err), users = [], fetching = False }, Cmd.none )
 
         Login ->
-            ( { model | userToken = Nothing }, login )
+            ( { model | userToken = Nothing }, (login model) )
 
         LoginResult (Ok token) ->
-            ( { model | userToken = Just token }, Cmd.none )
+            ( { model | userToken = Just token, error = "" }, Cmd.none )
 
         LoginResult (Err err) ->
             ( { model | userToken = Nothing, error = (toString err) }, Cmd.none )
+
+        InputEmail email ->
+            ( { model | email = email }, Cmd.none )
+
+        InputPassword pwd ->
+            ( { model | password = pwd }, Cmd.none )
 
 
 
@@ -90,6 +100,14 @@ userDetail user =
     li [] [ text user.name ]
 
 
+loginForm : Model -> Html Msg
+loginForm model =
+    div []
+        [ input [ type_ "text", value model.email, placeholder "john@doe.com", onInput InputEmail ] []
+        , input [ type_ "password", value model.password, placeholder "john@doe.com", onInput InputPassword ] []
+        ]
+
+
 loginButton : Html Msg
 loginButton =
     button [ Html.Events.onClick Login ] [ text "Login" ]
@@ -101,6 +119,7 @@ mainView model =
         [ p [] [ text model.error ]
         , usersSection model
         , p [] [ text (Maybe.withDefault "Not logged" model.userToken) ]
+        , loginForm model
         , loginButton
         ]
 
