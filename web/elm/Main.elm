@@ -14,7 +14,7 @@ type alias Model =
     { users : Users
     , error : String
     , fetching : Bool
-    , userToken : Maybe Token
+    , userToken : Token
     , email : String
     , password : String
     }
@@ -22,13 +22,14 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [] "" False Nothing "" "", fetchUsers )
+    ( Model [] "" False (Token Nothing Nothing) "" "", fetchUsers )
 
 
 type Msg
     = LoadUsers
     | FetchUsers (Result Http.Error Users)
     | Login
+    | Logout
     | LoginResult (Result Http.Error Token)
     | InputEmail String
     | InputPassword String
@@ -42,6 +43,22 @@ fetchUsers =
 login : Model -> Cmd Msg
 login model =
     Http.send LoginResult <| loginRequest model.email model.password
+
+
+loginError : Token -> String
+loginError token =
+    case token.errors of
+        Nothing ->
+            ""
+
+        -- just take the 1st error
+        Just errors ->
+            case List.head errors of
+                Nothing ->
+                    ""
+
+                Just err ->
+                    err
 
 
 
@@ -61,13 +78,16 @@ update msg model =
             ( { model | error = (toString err), users = [], fetching = False }, Cmd.none )
 
         Login ->
-            ( { model | userToken = Nothing }, (login model) )
+            ( { model | userToken = (Token Nothing Nothing) }, (login model) )
+
+        Logout ->
+            ( { model | userToken = (Token Nothing Nothing) }, Cmd.none )
 
         LoginResult (Ok token) ->
-            ( { model | userToken = Just token, error = "" }, Cmd.none )
+            ( { model | userToken = token, error = (loginError token), email = "", password = "" }, Cmd.none )
 
         LoginResult (Err err) ->
-            ( { model | userToken = Nothing, error = (toString err) }, Cmd.none )
+            ( { model | userToken = (Token Nothing Nothing), error = (toString err), email = "", password = "" }, Cmd.none )
 
         InputEmail email ->
             ( { model | email = email }, Cmd.none )
@@ -117,17 +137,17 @@ mainView : Model -> Html Msg
 mainView model =
     let
         authSection =
-            case model.userToken of
+            case model.userToken.token of
                 Nothing ->
                     div [] [ loginForm model, loginButton ]
 
                 Just token ->
-                    div [] [ text "Logout" ]
+                    div [] [ button [ Html.Events.onClick Logout ] [ text "Logout" ] ]
     in
         div []
             [ p [] [ text model.error ]
             , usersSection model
-            , p [] [ text (Maybe.withDefault "Not logged" model.userToken) ]
+            , p [] [ text (Maybe.withDefault "Not logged" model.userToken.token) ]
             , authSection
             ]
 

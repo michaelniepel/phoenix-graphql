@@ -18,5 +18,6 @@ defmodule Graphql.Schema.Types do
 
   object :session do
     field :token, :string
+    field :name, :string
   end
 end

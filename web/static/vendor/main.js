@@ -13080,39 +13080,8 @@ var _michaelniepel$elm_graphql_module$GraphQL$query = F6(
 		return A6(_michaelniepel$elm_graphql_module$GraphQL$fetch, method, url, query, operation, variables, decoder);
 	});
 
-var _user$project$GraphQL_Blog$tokenDecoder = A2(
-	_elm_lang$core$Json_Decode$at,
-	{
-		ctor: '::',
-		_0: 'data',
-		_1: {
-			ctor: '::',
-			_0: 'login',
-			_1: {
-				ctor: '::',
-				_0: 'token',
-				_1: {ctor: '[]'}
-			}
-		}
-	},
-	_elm_lang$core$Json_Decode$string);
+var _user$project$GraphQL_Blog$errorDecoder = A2(_elm_lang$core$Json_Decode$field, 'message', _elm_lang$core$Json_Decode$string);
 var _user$project$GraphQL_Blog$endpointUrl = 'http://localhost:4000/api/';
-var _user$project$GraphQL_Blog$loginRequest = F2(
-	function (email, password) {
-		var graphQLQuery = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'mutation Login { login(email:\"',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				email,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'\", password:\"',
-					A2(_elm_lang$core$Basics_ops['++'], password, '\"){token}}'))));
-		var graphQLParams = _elm_lang$core$Json_Encode$object(
-			{ctor: '[]'});
-		return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
-	});
 var _user$project$GraphQL_Blog$User = F2(
 	function (a, b) {
 		return {name: a, email: b};
@@ -13140,6 +13109,55 @@ var _user$project$GraphQL_Blog$usersRequest = function () {
 		{ctor: '[]'});
 	return A6(_michaelniepel$elm_graphql_module$GraphQL$query, 'POST', _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'users', graphQLParams, _user$project$GraphQL_Blog$usersDecoder);
 }();
+var _user$project$GraphQL_Blog$Token = F2(
+	function (a, b) {
+		return {token: a, errors: b};
+	});
+var _user$project$GraphQL_Blog$tokenDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$GraphQL_Blog$Token,
+	_elm_lang$core$Json_Decode$maybe(
+		A2(
+			_elm_lang$core$Json_Decode$at,
+			{
+				ctor: '::',
+				_0: 'data',
+				_1: {
+					ctor: '::',
+					_0: 'login',
+					_1: {
+						ctor: '::',
+						_0: 'token',
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			_elm_lang$core$Json_Decode$string)),
+	_elm_lang$core$Json_Decode$maybe(
+		A2(
+			_elm_lang$core$Json_Decode$at,
+			{
+				ctor: '::',
+				_0: 'errors',
+				_1: {ctor: '[]'}
+			},
+			_elm_lang$core$Json_Decode$list(_user$project$GraphQL_Blog$errorDecoder))));
+var _user$project$GraphQL_Blog$loginRequest = F2(
+	function (email, password) {
+		var graphQLQuery = A2(
+			_elm_lang$core$Basics_ops['++'],
+			'mutation Login { login(email:\"',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				email,
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'\", password:\"',
+					A2(_elm_lang$core$Basics_ops['++'], password, '\"){token}}'))));
+		var graphQLParams = _elm_lang$core$Json_Encode$object(
+			{ctor: '[]'});
+		return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
+	});
 
 var _user$project$Main$subscriptions = function (model) {
 	return _elm_lang$core$Platform_Sub$none;
@@ -13153,6 +13171,19 @@ var _user$project$Main$userDetail = function (user) {
 			_0: _elm_lang$html$Html$text(user.name),
 			_1: {ctor: '[]'}
 		});
+};
+var _user$project$Main$loginError = function (token) {
+	var _p0 = token.errors;
+	if (_p0.ctor === 'Nothing') {
+		return '';
+	} else {
+		var _p1 = _elm_lang$core$List$head(_p0._0);
+		if (_p1.ctor === 'Nothing') {
+			return '';
+		} else {
+			return _p1._0;
+		}
+	}
 };
 var _user$project$Main$Model = F6(
 	function (a, b, c, d, e, f) {
@@ -13221,6 +13252,7 @@ var _user$project$Main$login = function (model) {
 		_user$project$Main$LoginResult,
 		A2(_user$project$GraphQL_Blog$loginRequest, model.email, model.password));
 };
+var _user$project$Main$Logout = {ctor: 'Logout'};
 var _user$project$Main$Login = {ctor: 'Login'};
 var _user$project$Main$loginButton = A2(
 	_elm_lang$html$Html$button,
@@ -13245,15 +13277,15 @@ var _user$project$Main$init = {
 		{ctor: '[]'},
 		'',
 		false,
-		_elm_lang$core$Maybe$Nothing,
+		A2(_user$project$GraphQL_Blog$Token, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing),
 		'',
 		''),
 	_1: _user$project$Main$fetchUsers
 };
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
 			case 'LoadUsers':
 				return {
 					ctor: '_Tuple2',
@@ -13263,12 +13295,12 @@ var _user$project$Main$update = F2(
 					_1: _user$project$Main$fetchUsers
 				};
 			case 'FetchUsers':
-				if (_p0._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Ok') {
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{error: '', users: _p0._0._0, fetching: false}),
+							{error: '', users: _p2._0._0, fetching: false}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {
@@ -13277,7 +13309,7 @@ var _user$project$Main$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								error: _elm_lang$core$Basics$toString(_p0._0._0),
+								error: _elm_lang$core$Basics$toString(_p2._0._0),
 								users: {ctor: '[]'},
 								fetching: false
 							}),
@@ -13289,18 +13321,33 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{userToken: _elm_lang$core$Maybe$Nothing}),
+						{
+							userToken: A2(_user$project$GraphQL_Blog$Token, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)
+						}),
 					_1: _user$project$Main$login(model)
 				};
+			case 'Logout':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							userToken: A2(_user$project$GraphQL_Blog$Token, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'LoginResult':
-				if (_p0._0.ctor === 'Ok') {
+				if (_p2._0.ctor === 'Ok') {
+					var _p3 = _p2._0._0;
 					return {
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								userToken: _elm_lang$core$Maybe$Just(_p0._0._0),
-								error: ''
+								userToken: _p3,
+								error: _user$project$Main$loginError(_p3),
+								email: '',
+								password: ''
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -13310,8 +13357,10 @@ var _user$project$Main$update = F2(
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
 							{
-								userToken: _elm_lang$core$Maybe$Nothing,
-								error: _elm_lang$core$Basics$toString(_p0._0._0)
+								userToken: A2(_user$project$GraphQL_Blog$Token, _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing),
+								error: _elm_lang$core$Basics$toString(_p2._0._0),
+								email: '',
+								password: ''
 							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
@@ -13321,7 +13370,7 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{email: _p0._0}),
+						{email: _p2._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -13329,7 +13378,7 @@ var _user$project$Main$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{password: _p0._0}),
+						{password: _p2._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
@@ -13382,8 +13431,8 @@ var _user$project$Main$usersSection = function (model) {
 };
 var _user$project$Main$mainView = function (model) {
 	var authSection = function () {
-		var _p1 = model.userToken;
-		if (_p1.ctor === 'Nothing') {
+		var _p4 = model.userToken.token;
+		if (_p4.ctor === 'Nothing') {
 			return A2(
 				_elm_lang$html$Html$div,
 				{ctor: '[]'},
@@ -13402,7 +13451,18 @@ var _user$project$Main$mainView = function (model) {
 				{ctor: '[]'},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Logout'),
+					_0: A2(
+						_elm_lang$html$Html$button,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$Logout),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Logout'),
+							_1: {ctor: '[]'}
+						}),
 					_1: {ctor: '[]'}
 				});
 		}
@@ -13431,7 +13491,7 @@ var _user$project$Main$mainView = function (model) {
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html$text(
-								A2(_elm_lang$core$Maybe$withDefault, 'Not logged', model.userToken)),
+								A2(_elm_lang$core$Maybe$withDefault, 'Not logged', model.userToken.token)),
 							_1: {ctor: '[]'}
 						}),
 					_1: {
@@ -13449,7 +13509,7 @@ var _user$project$Main$main = _elm_lang$html$Html$program(
 var Elm = {};
 Elm['Main'] = Elm['Main'] || {};
 if (typeof _user$project$Main$main !== 'undefined') {
-    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Main.Msg":{"args":[],"tags":{"InputPassword":["String"],"LoadUsers":[],"LoginResult":["Result.Result Http.Error GraphQL.Blog.Token"],"InputEmail":["String"],"Login":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Token":{"args":[],"type":"String"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
+    _user$project$Main$main(Elm['Main'], 'Main', {"types":{"unions":{"Dict.LeafColor":{"args":[],"tags":{"LBBlack":[],"LBlack":[]}},"Dict.Dict":{"args":["k","v"],"tags":{"RBNode_elm_builtin":["Dict.NColor","k","v","Dict.Dict k v","Dict.Dict k v"],"RBEmpty_elm_builtin":["Dict.LeafColor"]}},"Maybe.Maybe":{"args":["a"],"tags":{"Just":["a"],"Nothing":[]}},"Main.Msg":{"args":[],"tags":{"Logout":[],"InputPassword":["String"],"LoadUsers":[],"LoginResult":["Result.Result Http.Error GraphQL.Blog.Token"],"InputEmail":["String"],"Login":[],"FetchUsers":["Result.Result Http.Error GraphQL.Blog.Users"]}},"Dict.NColor":{"args":[],"tags":{"BBlack":[],"Red":[],"NBlack":[],"Black":[]}},"Http.Error":{"args":[],"tags":{"BadUrl":["String"],"NetworkError":[],"Timeout":[],"BadStatus":["Http.Response String"],"BadPayload":["String","Http.Response String"]}},"Result.Result":{"args":["error","value"],"tags":{"Ok":["value"],"Err":["error"]}}},"aliases":{"Http.Response":{"args":["body"],"type":"{ url : String , status : { code : Int, message : String } , headers : Dict.Dict String String , body : body }"},"GraphQL.Blog.Token":{"args":[],"type":"{ token : Maybe.Maybe String, errors : Maybe.Maybe (List String) }"},"GraphQL.Blog.Users":{"args":[],"type":"List GraphQL.Blog.User"},"GraphQL.Blog.User":{"args":[],"type":"{ name : String, email : String }"}},"message":"Main.Msg"},"versions":{"elm":"0.18.0"}});
 }
 
 if (typeof define === "function" && define['amd'])

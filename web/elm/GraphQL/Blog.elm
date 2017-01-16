@@ -31,7 +31,9 @@ type alias Users =
 
 
 type alias Token =
-    String
+    { token : Maybe String
+    , errors : Maybe (List String)
+    }
 
 
 
@@ -84,4 +86,11 @@ userDecoder =
 
 tokenDecoder : Decoder Token
 tokenDecoder =
-    (at [ "data", "login", "token" ] string)
+    map2 Token
+        (maybe (at [ "data", "login", "token" ] string))
+        (maybe (at [ "errors" ] (list errorDecoder)))
+
+
+errorDecoder : Decoder String
+errorDecoder =
+    (field "message" string)
