@@ -58,12 +58,20 @@ loginRequest : String -> String -> Http.Request Token
 loginRequest email password =
     let
         graphQLQuery =
-            "mutation Login { login(email:\"" ++ email ++ "\", password:\"" ++ password ++ "\"){token}}"
+            """
+                mutation Login($email: String, $password: String) {
+                    login(email: $email, password: $password){
+                        token
+                    }
+                }
+            """
     in
         let
             graphQLParams =
                 Json.Encode.object
-                    []
+                    [ ( "email", Json.Encode.string email )
+                    , ( "password", Json.Encode.string password )
+                    ]
         in
             GraphQL.mutation endpointUrl graphQLQuery "Login" graphQLParams tokenDecoder
 

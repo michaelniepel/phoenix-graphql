@@ -13144,18 +13144,25 @@ var _user$project$GraphQL_Blog$tokenDecoder = A3(
 			_elm_lang$core$Json_Decode$list(_user$project$GraphQL_Blog$errorDecoder))));
 var _user$project$GraphQL_Blog$loginRequest = F2(
 	function (email, password) {
-		var graphQLQuery = A2(
-			_elm_lang$core$Basics_ops['++'],
-			'mutation Login { login(email:\"',
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				email,
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'\", password:\"',
-					A2(_elm_lang$core$Basics_ops['++'], password, '\"){token}}'))));
+		var graphQLQuery = '\n                mutation Login($email: String, $password: String) {\n                    login(email: $email, password: $password){\n                        token\n                    }\n                }\n            ';
 		var graphQLParams = _elm_lang$core$Json_Encode$object(
-			{ctor: '[]'});
+			{
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'email',
+					_1: _elm_lang$core$Json_Encode$string(email)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'password',
+						_1: _elm_lang$core$Json_Encode$string(password)
+					},
+					_1: {ctor: '[]'}
+				}
+			});
 		return A5(_michaelniepel$elm_graphql_module$GraphQL$mutation, _user$project$GraphQL_Blog$endpointUrl, graphQLQuery, 'Login', graphQLParams, _user$project$GraphQL_Blog$tokenDecoder);
 	});
 
